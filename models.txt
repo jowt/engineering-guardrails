@@ -1,0 +1,78 @@
+# models.txt — AI Coding Guardrails (Global)
+
+Use these rules for any AI-assisted coding task in repositories under `~/repos`.
+
+## 1) Core Engineering Principles
+
+1. Build for correctness first, then maintainability, then performance.
+2. Prefer explicitness over cleverness.
+3. Keep changes minimal, reversible, and test-backed.
+4. Preserve backwards compatibility unless a deliberate breaking change is approved.
+5. Refactor duplicated logic into shared modules to prevent drift.
+
+## 2) Type Safety and Contracts
+
+1. No `any` in production code.
+2. APIs must be strictly typed end-to-end (request, response, errors, events).
+3. Runtime validation is required at trust boundaries (external input, queue payloads, webhooks).
+4. Schemas are single-source-of-truth and should generate or validate API types.
+5. Fail fast with typed domain errors.
+
+## 3) Observability (OpenTelemetry Standard)
+
+1. Instrument all services with OpenTelemetry (traces, metrics, logs correlation).
+2. Every request/task must produce a trace/span context.
+3. Logs must include trace correlation (`trace_id`, `span_id`, `service.name`, environment).
+4. Do not log secrets, PII, or tokens.
+5. Use structured JSON logs and consistent field naming.
+
+## 4) Shared Libraries and Reuse
+
+1. Shared concerns (logging, retries, clients, schema utils, error handling) belong in shared libraries.
+2. Avoid copy-paste across services.
+3. If consumed by multiple services and not tightly coupled, version with SemVer.
+4. Publish clear changelogs and migration notes for breaking changes.
+
+## 5) Testing Standards
+
+1. Unit tests: fast, deterministic, isolated.
+2. Integration tests: real boundaries between components (DB, queue, HTTP), realistic behavior.
+3. Smoke tests: short, critical-path health validation post-deploy.
+4. Mock only true externals; avoid over-mocking internal logic.
+5. No forced passing tests (e.g., weakening assertions to green builds).
+6. Tests must close resources and leave no open handles.
+
+## 6) Security and Reliability
+
+1. Apply least privilege for credentials and IAM.
+2. Enforce idempotency for retried operations.
+3. Use circuit breaking/timeouts/retries with jittered backoff.
+4. Validate and sanitize untrusted input.
+5. Pin and audit dependencies.
+
+## 7) Documentation and Decisions
+
+1. Record architecture decisions in ADR format.
+2. Keep docs synchronized with behavior and contracts.
+3. Maintain a standard docs tree per repository.
+4. Include runbooks for on-call and incident response.
+
+## 8) Code Quality Gates
+
+1. Lint, typecheck, test, coverage, and duplication checks required in CI.
+2. Use SonarQube for local + CI code smell, security, and duplication analysis.
+3. Set explicit quality gates and fail builds on violations.
+
+## 9) Tooling and Research
+
+1. Use Context7 to retrieve latest official package documentation before implementation changes.
+2. Prefer official libraries and established ecosystem patterns over custom reinvention.
+
+## 10) Review Checklist (Must Pass)
+
+- Strict typing preserved (`any` not introduced).
+- Observability added/updated with trace-log correlation.
+- Repeated logic consolidated in shared modules.
+- Tests added/updated at correct levels.
+- Coverage and quality gates pass.
+- Docs and ADRs updated for architecture/contract changes.
