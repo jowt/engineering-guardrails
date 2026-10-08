@@ -1,0 +1,23 @@
+# Copy this file into a target repository as sonar-project.properties
+# and customize values per project.
+
+sonar.projectKey=replace-with-project-key
+sonar.projectName=replace-with-project-name
+sonar.sourceEncoding=UTF-8
+
+# Source + test layout
+sonar.sources=src
+sonar.tests=tests
+
+# Coverage report paths (adjust to your tooling)
+# Jest (lcov): coverage/lcov.info
+# Vitest (lcov): coverage/lcov.info
+sonar.javascript.lcov.reportPaths=coverage/lcov.info
+sonar.typescript.lcov.reportPaths=coverage/lcov.info
+
+# Exclusions
+sonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.d.ts
+sonar.test.inclusions=**/*.test.ts,**/*.spec.ts,**/*.test.js,**/*.spec.js
+
+# Optional: duplicate code exclusions for generated files
+# sonar.cpd.exclusions=**/generated/**
